@@ -1,0 +1,61 @@
+--Top 10 country SQL Query--
+
+SELECT D. country,
+COUNT (customer_id) AS customer_count
+FROM customer A
+INNER JOIN address B ON A. address_id = B.address_id
+INNER JOIN city C ON B.city_id = C.city_id
+INNER JOIN country D ON C.country_id = D.country_id
+GROUP BY country
+ORDER BY customer_count DESC
+LIMIT 10;
+
+--Average rental SQL query--
+
+SELECT 
+MIN (rental_duration) AS min_rent_period,
+MAX (rental_duration) AS max_rent_period,
+AVG (rental_duration) AS avg_rent_period,
+MIN (rental_rate) AS min_rent_rate,
+MAX (rental_rate) AS max_rent_rate,
+AVG (rental_rate) AS avg_rent_rate,
+MIN (replacement_cost) AS min_replacement_cost,
+MAX (replacement_cost) AS max_replacement_cost,
+AVG (replacement_cost) AS aveg_replacement_cost,
+COUNT (*) AS count_rows
+FROM film;
+
+
+--Rockbuster Rating SQL Query--
+SELECT rating,
+COUNT (film_id)
+FROM film
+GROUP BY rating;
+
+--Top 10 cities SQL Query--
+
+SELECT C.city, D.country, 
+COUNT (customer_id) AS customer_count
+FROM customer A
+INNER JOIN address B ON A.address_id = B.address_id
+INNER JOIN city C ON B.city_id = C.city_id
+INNER JOIN country D ON C.country_id = D.country_id
+WHERE D.country IN ('India', 'China',' United States', 'Japan', 'Mexico', 'Brazil', 'Russian Federation', 'Philippines', 'Turkey', 'Indonesia')
+GROUP BY city, country
+ORDER BY COUNT (customer_id) DESC
+LIMIT 10;
+
+--Top 5 Customers SQL Query--
+SELECT A.customer_ID, B.first_name, B.last_name, D.city, E.country,
+SUM (amount) AS highest_amount_paid
+FROM payment A
+INNER JOIN customer B ON A.customer_id=B.customer_id
+INNER JOIN address C ON B.address_id=C.address_id
+INNER JOIN city D ON C.city_id=D.city_id
+INNER JOIN country E ON D.country_id = E.country_id
+WHERE E.country IN ('India', 'China', 'United States','Japan', 'Mexico', 'Brazil', 'Russian Federation', 'Philippines', 'Turkey', 'Indonesia')
+AND D.city IN ('So Leopoldo', 'Atlixco', 'Pingxiang', 'Adoni', 'Dhule', 'Kurashiki', 'Xintai', 'Sivas', 'Celaya', 'Imus')
+GROUP BY A.customer_ID, B.first_name, B.last_name, D.city, E.country
+ORDER BY highest_amount_paid DESC
+LIMIT 5;
+
